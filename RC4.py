@@ -49,6 +49,7 @@ if __name__ == "__main__":
     output_sizes = [2**i for i in range(1,11)]
     randomness_measure = []
     for output_byte_size in output_sizes:
+        print(f"Working on output size of {output_byte_size} bytes.......", flush=True)
         n = (output_byte_size*8)-7
         randomness_values = []
         for toggled_bits in num_of_toggled_bits:
@@ -59,7 +60,8 @@ if __name__ == "__main__":
                 toggled_key = int_seed
                 for pos in positions_toggled:
                     toggled_key = toggled_key^(1<<pos)
-                toggled_hex_key = hex(toggled_key)[2:]
+
+                toggled_hex_key = hex(toggled_key)[2:].zfill(512)
                 op_keystream = rc4_key_generation(toggled_hex_key, toggled_bits)
 
                 # Taking `output_byte_size` number of bits from output keystream for randomness calculation.
@@ -84,11 +86,3 @@ if __name__ == "__main__":
     plt.ylabel("Average Randomness Measure")
     plt.legend()
     plt.show()
-
-#   File "/home/manu/Desktop/SEM 4/Cyber Security CS6500/ASSIGNMENT 1-RC4/RC4.py", line 63, in <module>
-#     op_keystream = rc4_key_generation(toggled_hex_key, toggled_bits)
-#   File "/home/manu/Desktop/SEM 4/Cyber Security CS6500/ASSIGNMENT 1-RC4/RC4.py", line 36, in rc4_key_generation
-#     s = key_scheduling(key)
-#   File "/home/manu/Desktop/SEM 4/Cyber Security CS6500/ASSIGNMENT 1-RC4/RC4.py", line 13, in key_scheduling
-#     key = list(binascii.unhexlify(key))
-# binascii.Error: Odd-length string
